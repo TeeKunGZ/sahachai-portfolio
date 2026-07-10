@@ -94,6 +94,96 @@
   animation: profile-float 6s ease-in-out infinite;
 }
 
+.orbit-dot {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  height: 0.55rem;
+  width: 0.55rem;
+  margin: -0.275rem;
+  border-radius: 9999px;
+  background: rgb(6, 182, 212);
+  box-shadow:
+    0 0 0 4px rgba(6, 182, 212, 0.12),
+    0 0 18px rgba(6, 182, 212, 0.58);
+}
+
+.orbit-dot-a {
+  animation: orbit-dot-a 12s linear infinite;
+}
+
+.orbit-dot-b {
+  animation: orbit-dot-b 17s linear infinite;
+}
+
+.orbit-label {
+  --orbit-rgb: 14, 116, 144;
+  position: absolute;
+  z-index: 3;
+  display: none;
+  border: 1px solid rgba(var(--orbit-rgb), 0.2);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.84);
+  padding: 0.3rem 0.65rem;
+  color: rgb(var(--orbit-rgb));
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow:
+    0 12px 30px rgba(15, 23, 42, 0.10),
+    0 0 18px rgba(var(--orbit-rgb), 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.orbit-label[data-accent='indigo'] {
+  --orbit-rgb: 79, 70, 229;
+}
+
+.orbit-label[data-accent='cyan'] {
+  --orbit-rgb: 8, 145, 178;
+}
+
+.orbit-label[data-accent='emerald'] {
+  --orbit-rgb: 5, 150, 105;
+}
+
+.orbit-label[data-accent='amber'] {
+  --orbit-rgb: 180, 83, 9;
+}
+
+.dark .orbit-label {
+  border-color: rgba(var(--orbit-rgb), 0.38);
+  background: rgba(15, 23, 42, 0.78);
+  color: rgb(226, 232, 240);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.32),
+    0 0 20px rgba(var(--orbit-rgb), 0.16);
+}
+
+.orbit-label-top {
+  left: 50%;
+  top: -3.35rem;
+  transform: translateX(-50%);
+}
+
+.orbit-label-right {
+  right: -4.25rem;
+  top: 30%;
+}
+
+.orbit-label-bottom {
+  bottom: -3.3rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.orbit-label-left {
+  left: -5.75rem;
+  top: 58%;
+}
+
 .project-card {
   position: relative;
 }
@@ -457,6 +547,24 @@
   }
 }
 
+@keyframes orbit-dot-a {
+  from {
+    transform: rotate(0deg) translateX(8.85rem) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(8.85rem) rotate(-360deg);
+  }
+}
+
+@keyframes orbit-dot-b {
+  from {
+    transform: rotate(220deg) translateX(10.1rem) rotate(-220deg);
+  }
+  to {
+    transform: rotate(-140deg) translateX(10.1rem) rotate(140deg);
+  }
+}
+
 @keyframes profile-float {
   0%,
   100% {
@@ -471,6 +579,7 @@
   .control-grid,
   .scan-line,
   .led-trace,
+  .orbit-dot,
   .profile-orbit::before,
   .profile-orbit::after,
   .profile-core {
@@ -493,6 +602,12 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .orbit-label {
+    display: block;
   }
 }
 

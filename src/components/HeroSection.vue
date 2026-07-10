@@ -83,6 +83,12 @@ watch(
 
       <!-- Photo / initials placeholder -->
       <div class="profile-orbit relative shrink-0">
+        <div class="orbit-dot orbit-dot-a" />
+        <div class="orbit-dot orbit-dot-b" />
+        <div class="orbit-label orbit-label-top" data-accent="indigo">PL/SQL</div>
+        <div class="orbit-label orbit-label-right" data-accent="cyan">Forms</div>
+        <div class="orbit-label orbit-label-bottom" data-accent="emerald">Reports</div>
+        <div class="orbit-label orbit-label-left" data-accent="amber">SQL Tuning</div>
         <img
           v-if="profile.photo && !imageFailed"
           :src="profile.photo"
