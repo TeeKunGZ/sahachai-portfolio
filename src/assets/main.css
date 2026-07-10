@@ -287,18 +287,18 @@
 
 .project-visual-pulse {
   position: absolute;
-  left: clamp(10rem, 34%, 16rem);
+  left: 12rem;
   top: 0;
   height: 5.5rem;
-  width: calc(100% - clamp(16rem, 46%, 22rem));
+  width: calc(100% - 17rem);
   pointer-events: none;
   mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
 }
 
 .project-visual-pulse-metric {
-  left: clamp(16rem, 42%, 20rem);
+  left: 18rem;
   top: 0;
-  width: calc(100% - clamp(22rem, 54%, 26rem));
+  width: calc(100% - 23rem);
 }
 
 .project-visual-segment,
@@ -308,7 +308,7 @@
 }
 
 .project-visual-segment {
-  height: 1.5px;
+  height: 1px;
   border-radius: 9999px;
   background: linear-gradient(90deg, rgba(var(--visual-rgb), 0.34), rgba(var(--visual-rgb), 0.14));
   box-shadow: 0 0 7px rgba(var(--visual-rgb), 0.14);
@@ -320,7 +320,7 @@
 
 .project-visual-segment-vertical {
   height: auto;
-  width: 1.5px;
+  width: 1px;
   background: linear-gradient(180deg, rgba(var(--visual-rgb), 0.34), rgba(var(--visual-rgb), 0.14));
   transform: scaleY(0);
   transform-origin: center var(--segment-origin, top);
