@@ -21,7 +21,7 @@ export const profile = {
   stats: [
     { value: 6, suffix: '+', label: 'Years of Experience' },
     { value: 3, suffix: '', label: 'Professional Roles' },
-    { value: projects.length, suffix: '', label: 'Case Studies' },
+    { value: projects.length, suffix: '', label: 'Featured Projects' },
   ],
   summary:
     'Oracle Development Supervisor with 6+ years of experience in Oracle application development, PL/SQL programming, business analysis, and enterprise system support. Experienced in leading technical teams, managing cross-functional collaboration, optimizing business processes, and delivering scalable solutions for high-volume operational environments.',
