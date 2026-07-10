@@ -24,7 +24,7 @@ import { education } from '../data/education.js'
             <h3 class="font-bold text-slate-900 dark:text-white">{{ item.degree }}</h3>
             <p class="mt-0.5 text-sm text-slate-600 dark:text-slate-400">{{ item.institution }}</p>
             <p class="mt-1 text-xs font-medium text-slate-400 dark:text-slate-500">
-              Graduated {{ item.year }} · GPA {{ item.gpa }}
+              Graduated {{ item.year }} - GPA {{ item.gpa }}
             </p>
           </div>
         </div>

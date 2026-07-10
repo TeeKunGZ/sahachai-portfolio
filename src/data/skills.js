@@ -7,7 +7,7 @@ export const skillGroups = [
     subtitle: 'Core Expertise',
     icon: 'database',
     summary:
-      'Primary focus: building, tuning, and supporting Oracle ERP workflows used in daily manufacturing operations.',
+      'Primary focus: Oracle Forms, Reports, PL/SQL, SQL tuning, data migration, and ERP release support for manufacturing operations.',
     skills: [
       'Oracle Forms 6i / 2000',
       'Oracle Reports 6i / 2000',
@@ -40,6 +40,21 @@ export const skillGroups = [
       'Technical Specifications',
       'Data Flow Diagrams (DFD)',
       'User Manuals & Training',
+    ],
+  },
+  {
+    id: 'leadership',
+    title: 'Technical Leadership',
+    subtitle: 'Team Delivery & Coordination',
+    icon: 'users',
+    skills: [
+      'Mentoring & Technical Guidance',
+      'Code Review & Development Standards',
+      'Technical Design Review',
+      'Work Estimation & Prioritization',
+      'Release Planning & UAT Coordination',
+      'Incident Coordination & Root Cause Analysis',
+      'Cross-functional Collaboration',
     ],
   },
 ]

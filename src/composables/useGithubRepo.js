@@ -19,7 +19,7 @@ function writeCache(repo, value) {
   try {
     sessionStorage.setItem(CACHE_PREFIX + repo, JSON.stringify(value))
   } catch {
-    // sessionStorage unavailable (private mode quota, etc.) — just skip caching
+    // sessionStorage unavailable (private mode quota, etc.); just skip caching
   }
 }
 

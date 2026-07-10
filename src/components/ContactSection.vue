@@ -14,7 +14,7 @@ import { profile } from '../data/profile.js'
 
       <p v-reveal="{ delay: 100 }" class="max-w-2xl text-slate-300">
         Open to opportunities in Oracle development, enterprise systems, and technical leadership.
-        The fastest way to reach me is by email or LinkedIn — full contact details are in the downloadable CV.
+        The fastest way to reach me is by email or LinkedIn; full contact details are in the downloadable CV.
       </p>
 
       <div class="mt-8 flex flex-wrap gap-3">

@@ -31,10 +31,10 @@ function goToSection(id) {
 
 const commands = [
   { label: 'Go to Top', hint: 'Navigate', icon: Home, run: () => goToSection('top') },
-  { label: 'About — Professional Summary', hint: 'Navigate', icon: User, run: () => goToSection('about') },
-  { label: 'Skills — Technical Proficiency', hint: 'Navigate', icon: Wrench, run: () => goToSection('skills') },
-  { label: 'Experience — Work History', hint: 'Navigate', icon: Briefcase, run: () => goToSection('experience') },
-  { label: 'Portfolio — Case Studies', hint: 'Navigate', icon: FolderOpen, run: () => goToSection('portfolio') },
+  { label: 'About - Professional Summary', hint: 'Navigate', icon: User, run: () => goToSection('about') },
+  { label: 'Skills - Technical Proficiency', hint: 'Navigate', icon: Wrench, run: () => goToSection('skills') },
+  { label: 'Experience - Work History', hint: 'Navigate', icon: Briefcase, run: () => goToSection('experience') },
+  { label: 'Portfolio - Case Studies', hint: 'Navigate', icon: FolderOpen, run: () => goToSection('portfolio') },
   { label: 'Education', hint: 'Navigate', icon: GraduationCap, run: () => goToSection('education') },
   { label: 'Contact', hint: 'Navigate', icon: Mail, run: () => goToSection('contact') },
   {
@@ -150,7 +150,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
               ref="inputRef"
               v-model="query"
               type="text"
-              placeholder="Search sections or actions…"
+              placeholder="Search sections or actions..."
               class="w-full bg-transparent py-3.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 dark:text-white"
             />
             <kbd

@@ -2,9 +2,9 @@
 
 Personal CV/portfolio site built with **Vue 3 + Vite + Tailwind CSS**, deployed on Vercel.
 
-> Oracle / PL/SQL technical lead with 6+ years of experience modernizing Oracle
-> ERP workflows, tuning enterprise systems, and delivering automation for
-> manufacturing operations.
+> Oracle Development Supervisor with 6+ years of Oracle ERP and PL/SQL
+> experience modernizing workflows, tuning enterprise systems, and delivering
+> automation for manufacturing operations.
 
 ## Features
 
@@ -13,7 +13,6 @@ Personal CV/portfolio site built with **Vue 3 + Vite + Tailwind CSS**, deployed 
 - **Dark / light mode** persisted to `localStorage`, with no flash on load
 - **Portfolio tech filter** for case studies by stack
 - **Featured case studies** for Oracle ERP modernization, dashboards, automation, and workflow tools
-- **Live GitHub stats** for public repos, with session caching and silent fallback
 - **Scroll-reveal animations**, count-up stat counters, and a reading progress bar that respect `prefers-reduced-motion`
 - **SEO metadata and JSON-LD** structured data for a professional CV profile
 
