@@ -5,31 +5,7 @@
 //   featured  - highlights strongest case studies in the UI
 //   impact    - business/user value; keep qualitative unless verified metrics exist
 export const projects = [
-  {
-    id: 'cv-portfolio',
-    featured: true,
-    visual: { icon: 'layoutDashboard', label: 'CV Portfolio', accent: 'violet' },
-    title: 'Interactive CV Portfolio',
-    context: 'Personal portfolio for Oracle ERP, PL/SQL, and automation work',
-    role: 'Solo Developer',
-    duration: '2026',
-    problem:
-      'A static resume could not clearly show the range of Oracle ERP modernization, automation, and web development work behind the listed experience.',
-    solution:
-      'Built a responsive portfolio that turns career history, case studies, GitHub activity, and recruiter contact flows into a polished web experience.',
-    highlights: [
-      'Designed a Vue 3 and Tailwind CSS single-page portfolio with responsive sections for profile, skills, work experience, and selected case studies.',
-      'Added interactive portfolio filtering, drag-friendly project navigation, progress nodes, and featured project badges for faster scanning.',
-      'Integrated GitHub repository signals and a command palette so recruiters can jump directly to the strongest proof points.',
-      'Refined professional UI details including current-role animation, dark mode support, motion preferences, and no-selection read-only presentation.',
-    ],
-    impact:
-      'Presents the resume as a working product while demonstrating frontend polish, automation mindset, and practical portfolio engineering.',
-    tech: ['Vue 3', 'Tailwind CSS', 'Vite', 'JavaScript', 'GitHub API'],
-    demoUrl: null,
-    sourceUrl: 'https://github.com/TeeKunGZ/sahachai-portfolio',
-    repo: 'TeeKunGZ/sahachai-portfolio',
-  },
+  
   {
     id: 'artportal',
     featured: true,
@@ -218,5 +194,30 @@ export const projects = [
     tech: ['Python', 'FastAPI', 'Discord Webhooks', 'API Integration'],
     demoUrl: null,
     sourceUrl: null, 
+  },
+  {
+    id: 'cv-portfolio',
+    featured: true,
+    visual: { icon: 'layoutDashboard', label: 'CV Portfolio', accent: 'violet' },
+    title: 'Interactive CV Portfolio',
+    context: 'Personal portfolio for Oracle ERP, PL/SQL, and automation work',
+    role: 'Solo Developer',
+    duration: '2026',
+    problem:
+      'A static resume could not clearly show the range of Oracle ERP modernization, automation, and web development work behind the listed experience.',
+    solution:
+      'Built a responsive portfolio that turns career history, case studies, GitHub activity, and recruiter contact flows into a polished web experience.',
+    highlights: [
+      'Designed a Vue 3 and Tailwind CSS single-page portfolio with responsive sections for profile, skills, work experience, and selected case studies.',
+      'Added interactive portfolio filtering, drag-friendly project navigation, progress nodes, and featured project badges for faster scanning.',
+      'Integrated GitHub repository signals and a command palette so recruiters can jump directly to the strongest proof points.',
+      'Refined professional UI details including current-role animation, dark mode support, motion preferences, and no-selection read-only presentation.',
+    ],
+    impact:
+      'Presents the resume as a working product while demonstrating frontend polish, automation mindset, and practical portfolio engineering.',
+    tech: ['Vue 3', 'Tailwind CSS', 'Vite', 'JavaScript', 'GitHub API'],
+    demoUrl: null,
+    sourceUrl: 'https://github.com/TeeKunGZ/sahachai-portfolio',
+    repo: 'TeeKunGZ/sahachai-portfolio',
   },
 ]

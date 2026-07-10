@@ -170,6 +170,104 @@ function visualIcon(project) {
   return visualIcons[project.visual?.icon] ?? Database
 }
 
+const zigzagPathCache = new Map()
+const GRID_SIZE = 24
+
+function seededRandom(seed) {
+  let value = seed
+  return () => {
+    value = (value * 1664525 + 1013904223) % 4294967296
+    return value / 4294967296
+  }
+}
+
+function hashPathSeed(value) {
+  return [...value].reduce((hash, char) => (hash * 31 + char.charCodeAt(0)) >>> 0, 2166136261)
+}
+
+function zigzagPath(project, index) {
+  const cacheKey = `${project.id}-${index}`
+  if (zigzagPathCache.has(cacheKey)) return zigzagPathCache.get(cacheKey)
+
+  const random = seededRandom(hashPathSeed(cacheKey))
+  const hasMetric = Boolean(project.metric)
+  const minY = GRID_SIZE
+  const maxY = GRID_SIZE * 3
+  let x = 0
+  let y = GRID_SIZE * 2
+  const targetX = GRID_SIZE * (hasMetric ? 12 : 15)
+  const points = [{ x, y }]
+
+  const moveHorizontal = (steps) => {
+    x += steps * GRID_SIZE
+    points.push({ x, y })
+  }
+
+  const moveVertical = (nextY) => {
+    y = Math.max(minY, Math.min(maxY, nextY))
+    points.push({ x, y })
+  }
+
+  const turn = () => {
+    const direction = y === minY ? 1 : y === maxY ? -1 : random() > 0.5 ? 1 : -1
+    moveVertical(y + direction * GRID_SIZE)
+  }
+
+  moveHorizontal(2)
+  turn()
+  moveHorizontal(1 + Math.round(random()))
+  turn()
+  moveHorizontal(2)
+
+  if (random() > 0.45) {
+    turn()
+    moveHorizontal(1 + Math.round(random()))
+    turn()
+  }
+
+  while (x < targetX) {
+    const remainingSteps = Math.round((targetX - x) / GRID_SIZE)
+    moveHorizontal(Math.min(2, remainingSteps))
+    if (x < targetX) turn()
+  }
+
+  const segments = points.slice(1).map((point, i) => {
+    const previous = points[i]
+    const horizontal = previous.y === point.y
+    return {
+      id: `${cacheKey}-segment-${i}`,
+      horizontal,
+      style: horizontal
+        ? {
+            left: `${previous.x}px`,
+            top: `${previous.y}px`,
+            width: `${point.x - previous.x}px`,
+            '--segment-delay': `${i * 0.1}s`,
+          }
+        : {
+            left: `${previous.x}px`,
+            top: `${Math.min(previous.y, point.y)}px`,
+            height: `${Math.abs(point.y - previous.y)}px`,
+            '--segment-delay': `${i * 0.1}s`,
+            '--segment-origin': point.y > previous.y ? 'top' : 'bottom',
+          },
+    }
+  })
+
+  const nodes = points.slice(1).map((point, i) => ({
+    id: `${cacheKey}-node-${i}`,
+    style: {
+      left: `${point.x}px`,
+      top: `${point.y}px`,
+      '--segment-delay': `${i * 0.1 + 0.08}s`,
+    },
+  }))
+
+  const path = { segments, nodes }
+  zigzagPathCache.set(cacheKey, path)
+  return path
+}
+
 watch(selectedTech, async () => {
   activeIndex.value = 0
   await nextTick()
@@ -214,22 +312,26 @@ const PREVIEW_COUNT = 2
       </div>
 
       <div v-reveal class="mb-5 flex items-center justify-between gap-4">
-        <div class="gallery-progress relative h-2 flex-1 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
+        <div class="gallery-progress relative h-2.5 flex-1 rounded-full bg-slate-200 dark:bg-slate-800">
           <div
-            class="gallery-progress-fill h-full rounded-full bg-accent-700 transition-[width] duration-500 ease-out dark:bg-accent-500"
+            class="gallery-progress-fill h-full rounded-full transition-[width] duration-500 ease-out"
             :style="{ width: progressWidth }"
           />
           <div class="absolute inset-0 flex items-center justify-between">
-            <span
-              v-for="(_, index) in filteredProjects"
+            <button
+              v-for="(project, index) in filteredProjects"
               :key="index"
               class="gallery-progress-node"
               :class="{ 'gallery-progress-node-active': index <= activeIndex }"
+              type="button"
+              :aria-label="`Go to ${project.visual?.label ?? project.title}`"
+              :data-label="project.visual?.label ?? project.title"
+              @click="scrollToProject(index)"
             />
           </div>
         </div>
         <div class="flex shrink-0 items-center gap-2">
-          <span class="min-w-12 text-right text-xs font-bold tabular-nums text-slate-400 dark:text-slate-500">
+          <span class="gallery-progress-count min-w-12 text-center text-[11px] font-bold tabular-nums text-slate-500 dark:text-slate-300">
             {{ activeIndex + 1 }} / {{ filteredProjects.length }}
           </span>
         </div>
@@ -271,7 +373,25 @@ const PREVIEW_COUNT = 2
         >
             <div class="project-visual" :data-accent="project.visual?.accent ?? 'cyan'">
               <div class="project-visual-grid" />
-              <div class="project-visual-pulse" />
+              <div
+                class="project-visual-pulse"
+                :class="{ 'project-visual-pulse-metric': project.metric }"
+                aria-hidden="true"
+              >
+                <span
+                  v-for="segment in zigzagPath(project, index).segments"
+                  :key="segment.id"
+                  class="project-visual-segment"
+                  :class="{ 'project-visual-segment-vertical': !segment.horizontal }"
+                  :style="segment.style"
+                />
+                <span
+                  v-for="node in zigzagPath(project, index).nodes"
+                  :key="node.id"
+                  class="project-visual-node"
+                  :style="node.style"
+                />
+              </div>
               <div class="relative flex h-full items-center justify-between gap-4">
                 <div>
                   <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400">
