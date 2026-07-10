@@ -63,6 +63,8 @@ const activeIndex = ref(0)
 const isDragging = ref(false)
 const dragStartX = ref(0)
 const dragStartScrollLeft = ref(0)
+const dragStartIndex = ref(0)
+const DRAG_SNAP_THRESHOLD = 10
 
 const progressWidth = computed(() =>
   filteredProjects.value.length ? `${((activeIndex.value + 1) / filteredProjects.value.length) * 100}%` : '0%',
@@ -104,6 +106,19 @@ function scrollGallery(direction) {
   window.setTimeout(updateActiveProject, 420)
 }
 
+function scrollToProject(index) {
+  const gallery = galleryRef.value
+  if (!gallery) return
+
+  const cards = [...gallery.querySelectorAll('[data-project-card]')]
+  const target = cards[Math.max(0, Math.min(index, cards.length - 1))]
+  if (!target) return
+
+  const left = target.offsetLeft - (gallery.clientWidth - target.offsetWidth) / 2
+  gallery.scrollTo({ left, behavior: 'smooth' })
+  activeIndex.value = Math.max(0, Math.min(index, cards.length - 1))
+}
+
 function isInteractiveTarget(target) {
   return target instanceof Element && Boolean(target.closest('button, a'))
 }
@@ -115,6 +130,7 @@ function startGalleryDrag(event) {
   isDragging.value = true
   dragStartX.value = event.pageX
   dragStartScrollLeft.value = gallery.scrollLeft
+  dragStartIndex.value = activeIndex.value
   gallery.setPointerCapture?.(event.pointerId)
 }
 
@@ -131,9 +147,16 @@ function dragGallery(event) {
 function stopGalleryDrag(event) {
   if (!isDragging.value) return
 
+  const dragDistance = event.pageX - dragStartX.value
   isDragging.value = false
   galleryRef.value?.releasePointerCapture?.(event.pointerId)
-  window.setTimeout(updateActiveProject, 80)
+
+  if (Math.abs(dragDistance) >= DRAG_SNAP_THRESHOLD) {
+    scrollToProject(dragStartIndex.value + (dragDistance < 0 ? 1 : -1))
+    return
+  }
+
+  scrollToProject(activeIndex.value)
 }
 
 function setTechFilter(tech) {
