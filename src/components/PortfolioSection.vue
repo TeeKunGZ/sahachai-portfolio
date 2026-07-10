@@ -1,6 +1,22 @@
 <script setup>
-import { ref, computed, reactive } from 'vue'
-import { ExternalLink, Github, TrendingUp, Calendar, ChevronDown, Award } from 'lucide-vue-next'
+import { ref, computed, reactive, nextTick, watch } from 'vue'
+import {
+  ExternalLink,
+  Github,
+  TrendingUp,
+  Calendar,
+  ChevronDown,
+  Award,
+  ArrowLeft,
+  ArrowRight,
+  Bell,
+  Bot,
+  Database,
+  FileSpreadsheet,
+  GitCompare,
+  Image,
+  LayoutDashboard,
+} from 'lucide-vue-next'
 import SectionHeading from './SectionHeading.vue'
 import RepoStats from './RepoStats.vue'
 import { projects } from '../data/projects.js'
@@ -8,6 +24,16 @@ import { projects } from '../data/projects.js'
 const ALL_FILTER = 'All'
 const selectedTech = ref(ALL_FILTER)
 const CURRENT_YEAR = new Date().getFullYear()
+
+const visualIcons = {
+  bell: Bell,
+  bot: Bot,
+  database: Database,
+  fileSpreadsheet: FileSpreadsheet,
+  gitCompare: GitCompare,
+  image: Image,
+  layoutDashboard: LayoutDashboard,
+}
 
 const techFilters = computed(() => [ALL_FILTER, ...new Set(projects.flatMap((p) => p.tech))])
 
@@ -31,6 +57,99 @@ const filteredProjects = computed(() =>
     ? sortedProjects.value
     : sortedProjects.value.filter((p) => p.tech.includes(selectedTech.value)),
 )
+
+const galleryRef = ref(null)
+const activeIndex = ref(0)
+const isDragging = ref(false)
+const dragStartX = ref(0)
+const dragStartScrollLeft = ref(0)
+
+const progressWidth = computed(() =>
+  filteredProjects.value.length ? `${((activeIndex.value + 1) / filteredProjects.value.length) * 100}%` : '0%',
+)
+
+function updateActiveProject() {
+  const gallery = galleryRef.value
+  if (!gallery) return
+
+  const cards = [...gallery.querySelectorAll('[data-project-card]')]
+  if (!cards.length) {
+    activeIndex.value = 0
+    return
+  }
+
+  const center = gallery.scrollLeft + gallery.clientWidth / 2
+  let closestIndex = 0
+  let closestDistance = Infinity
+
+  cards.forEach((card, index) => {
+    const cardCenter = card.offsetLeft + card.offsetWidth / 2
+    const distance = Math.abs(center - cardCenter)
+    if (distance < closestDistance) {
+      closestDistance = distance
+      closestIndex = index
+    }
+  })
+
+  activeIndex.value = closestIndex
+}
+
+function scrollGallery(direction) {
+  const gallery = galleryRef.value
+  if (!gallery) return
+
+  const card = gallery.querySelector('[data-project-card]')
+  const cardWidth = card?.getBoundingClientRect().width ?? gallery.clientWidth * 0.86
+  gallery.scrollBy({ left: direction * (cardWidth + 24), behavior: 'smooth' })
+  window.setTimeout(updateActiveProject, 420)
+}
+
+function isInteractiveTarget(target) {
+  return target instanceof Element && Boolean(target.closest('button, a'))
+}
+
+function startGalleryDrag(event) {
+  const gallery = galleryRef.value
+  if (!gallery || event.button !== 0 || isInteractiveTarget(event.target)) return
+
+  isDragging.value = true
+  dragStartX.value = event.pageX
+  dragStartScrollLeft.value = gallery.scrollLeft
+  gallery.setPointerCapture?.(event.pointerId)
+}
+
+function dragGallery(event) {
+  const gallery = galleryRef.value
+  if (!gallery || !isDragging.value) return
+
+  event.preventDefault()
+  const distance = event.pageX - dragStartX.value
+  gallery.scrollLeft = dragStartScrollLeft.value - distance
+  updateActiveProject()
+}
+
+function stopGalleryDrag(event) {
+  if (!isDragging.value) return
+
+  isDragging.value = false
+  galleryRef.value?.releasePointerCapture?.(event.pointerId)
+  window.setTimeout(updateActiveProject, 80)
+}
+
+function setTechFilter(tech) {
+  selectedTech.value = tech
+}
+
+function visualIcon(project) {
+  return visualIcons[project.visual?.icon] ?? Database
+}
+
+watch(selectedTech, async () => {
+  activeIndex.value = 0
+  await nextTick()
+  galleryRef.value?.scrollTo({ left: 0, behavior: 'smooth' })
+  updateActiveProject()
+})
 
 // Highlights collapse to a short preview by default; expand per-card on demand.
 const expanded = reactive(new Set())
@@ -62,31 +181,104 @@ const PREVIEW_COUNT = 2
               ? 'border-accent-700 bg-accent-700 text-white'
               : 'border-slate-300 bg-white text-slate-600 hover:border-accent-600 hover:text-accent-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-accent-600 dark:hover:text-accent-100'
           "
-          @click="selectedTech = tech"
+          @click="setTechFilter(tech)"
         >
           {{ tech }}
         </button>
       </div>
 
-      <TransitionGroup v-reveal name="card" tag="div" class="grid gap-6 md:grid-cols-2">
-        <article
-          v-for="project in filteredProjects"
-          :key="project.id"
-          class="project-card flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent-300 hover:shadow-[0_18px_45px_rgba(15,23,42,0.10)] dark:border-slate-800 dark:bg-slate-900 dark:hover:border-accent-800 dark:hover:shadow-[0_18px_45px_rgba(0,0,0,0.28)]"
-        >
-          <div class="flex items-start justify-between gap-3">
-            <h3 class="text-lg font-bold text-slate-900 dark:text-white">{{ project.title }}</h3>
+      <div v-reveal class="mb-5 flex items-center justify-between gap-4">
+        <div class="gallery-progress relative h-2 flex-1 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
+          <div
+            class="gallery-progress-fill h-full rounded-full bg-accent-700 transition-[width] duration-500 ease-out dark:bg-accent-500"
+            :style="{ width: progressWidth }"
+          />
+          <div class="absolute inset-0 flex items-center justify-between px-1">
             <span
-              v-if="project.featured"
-              class="inline-flex shrink-0 items-center gap-1 rounded-md border border-accent-100 bg-accent-50 px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-accent-800 dark:border-accent-900/60 dark:bg-accent-900/30 dark:text-accent-100"
-            >
-              <Award class="h-3 w-3" />
-              Featured
-            </span>
+              v-for="(_, index) in filteredProjects"
+              :key="index"
+              class="gallery-progress-node"
+              :class="{ 'gallery-progress-node-active': index <= activeIndex }"
+            />
           </div>
-          <p class="mt-1 text-xs font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
-            {{ project.context }}
-          </p>
+        </div>
+        <div class="flex shrink-0 items-center gap-2">
+          <span class="min-w-12 text-right text-xs font-bold tabular-nums text-slate-400 dark:text-slate-500">
+            {{ activeIndex + 1 }} / {{ filteredProjects.length }}
+          </span>
+        </div>
+      </div>
+
+      <div v-reveal class="relative">
+        <button
+          class="gallery-paddle gallery-paddle-left"
+          aria-label="Previous projects"
+          @click="scrollGallery(-1)"
+        >
+          <ArrowLeft class="h-5 w-5" />
+        </button>
+        <button
+          class="gallery-paddle gallery-paddle-right"
+          aria-label="Next projects"
+          @click="scrollGallery(1)"
+        >
+          <ArrowRight class="h-5 w-5" />
+        </button>
+
+        <div
+          ref="galleryRef"
+          class="portfolio-gallery -mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 pt-1 scroll-smooth sm:-mx-8"
+          :class="{ 'is-dragging': isDragging }"
+          @pointerdown="startGalleryDrag"
+          @pointermove="dragGallery"
+          @pointerup="stopGalleryDrag"
+          @pointercancel="stopGalleryDrag"
+          @pointerleave="stopGalleryDrag"
+          @scroll.passive="updateActiveProject"
+        >
+          <article
+            v-for="(project, index) in filteredProjects"
+            :key="project.id"
+            data-project-card
+          class="project-card min-h-[34rem] w-[var(--gallery-card-width)] shrink-0 snap-center snap-always flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent-300 hover:shadow-[0_18px_45px_rgba(15,23,42,0.10)] dark:border-slate-800 dark:bg-slate-900 dark:hover:border-accent-800 dark:hover:shadow-[0_18px_45px_rgba(0,0,0,0.28)]"
+          :class="{ 'project-card-active': index === activeIndex, 'project-card-muted': index !== activeIndex }"
+        >
+            <div class="project-visual" :data-accent="project.visual?.accent ?? 'cyan'">
+              <div class="project-visual-grid" />
+              <div class="project-visual-pulse" />
+              <div class="relative flex h-full items-center justify-between gap-4">
+                <div>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400">
+                    {{ project.visual?.label ?? 'Case Study' }}
+                  </p>
+                  <div v-if="project.metric" class="mt-3 inline-flex items-center gap-2 rounded-lg border border-white/60 bg-white/75 px-3 py-2 text-sm font-bold text-slate-900 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-950/55 dark:text-white">
+                    <span>{{ project.metric.from }}</span>
+                    <ArrowRight class="h-3.5 w-3.5 text-accent-700 dark:text-accent-300" />
+                    <span>{{ project.metric.to }}</span>
+                    <span class="rounded bg-accent-100 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-accent-800 dark:bg-accent-900/70 dark:text-accent-100">
+                      {{ project.metric.label }}
+                    </span>
+                  </div>
+                </div>
+                <div class="project-visual-icon">
+                  <component :is="visualIcon(project)" class="h-7 w-7" />
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-start justify-between gap-3">
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">{{ project.title }}</h3>
+              <span
+                v-if="project.featured"
+                class="inline-flex shrink-0 items-center gap-1 rounded-md border border-accent-100 bg-accent-50 px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-accent-800 dark:border-accent-900/60 dark:bg-accent-900/30 dark:text-accent-100"
+              >
+                <Award class="h-3 w-3" />
+                Featured
+              </span>
+            </div>
+            <p class="mt-1 text-xs font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
+              {{ project.context }}
+            </p>
 
           <!-- Role / duration meta -->
           <div
@@ -147,7 +339,7 @@ const PREVIEW_COUNT = 2
               v-for="tech in project.tech"
               :key="tech"
               class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 transition-colors hover:bg-accent-50 hover:text-accent-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-accent-900/40 dark:hover:text-accent-100"
-              @click="selectedTech = tech"
+              @click="setTechFilter(tech)"
             >
               {{ tech }}
             </button>
@@ -178,8 +370,9 @@ const PREVIEW_COUNT = 2
               Source
             </a>
           </div>
-        </article>
-      </TransitionGroup>
+          </article>
+        </div>
+      </div>
 
       <p class="mt-8 text-sm text-slate-400 dark:text-slate-500">
         Case studies are described at a level that respects employer confidentiality — no internal data or live company systems are shown.

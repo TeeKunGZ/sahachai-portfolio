@@ -8,6 +8,7 @@ export const projects = [
   {
     id: 'artportal',
     featured: true,
+    visual: { icon: 'image', label: 'OCR Pipeline', accent: 'cyan' },
     title: 'ArtPortal - Artwork Processing & Export System',
     context: 'AI-assisted licensing submission pipeline for garment artwork',
     role: 'Solo Developer',
@@ -31,8 +32,34 @@ export const projects = [
     repo: 'TeeKunGZ/artwork-v2.1',
   },
   {
+    id: 'auto-bom',
+    featured: true,
+    visual: { icon: 'fileSpreadsheet', label: 'PDF to BOM', accent: 'emerald' },
+    metric: { from: '1 hr', to: '15 min', label: '~75% faster' },
+    title: 'Auto BOM - Automated BOM Data Extraction from PDF into Oracle ERP',
+    context: 'Automated BOM data extraction from Customers tech pack PDFs into Oracle ERP',
+    role: 'Solo Developer',
+    duration: '2025',
+    problem:
+      'BOM details from customer tech pack PDF files had to be collected manually before they could be prepared for import into Oracle ERP, making each style slow to set up.',
+    solution:
+      'Built an automated extraction workflow that reads Fanatics tech pack PDFs and outputs structured Excel data for quick Soft Square import.',
+    highlights: [
+      'Analyzed Fanatics tech pack PDF layouts to identify the most reliable extraction path for BOM-related data fields.',
+      'Converted semi-structured PDF content into an Excel format prepared for downstream Soft Square import.',
+      'Reduced repeated manual data entry by turning tech pack review into a guided export workflow.',
+      'Helped automatically generate BOM database input so production teams can create material details faster and with fewer copy/paste steps.',
+    ],
+    impact:
+      'Reduced BOM data preparation time from about 1 hour to roughly 15 minutes per tech pack, cutting manual collection time by around 75%.',
+    tech: ['Python', 'PDF Extraction', 'Excel Automation', 'BOM', 'Soft Square'],
+    demoUrl: null,
+    sourceUrl: null,
+  },
+  {
     id: 'oracle-erp',
     featured: true,
+    visual: { icon: 'database', label: 'Oracle ERP Core', accent: 'indigo' },
     title: 'Oracle ERP Forms & Reports Development',
     context: 'Enterprise ERP for high-volume garment manufacturing',
     role: 'Sr. Oracle Developer / Supervisor',
@@ -56,6 +83,7 @@ export const projects = [
   {
     id: 'nodejs-dashboard',
     featured: true,
+    visual: { icon: 'bell', label: 'Live Alerts', accent: 'amber' },
     title: 'Node.js Dashboards & Automated Email Alerts',
     context: 'Bridging Oracle data to modern web reporting',
     role: 'Sr. Oracle Developer',
@@ -78,6 +106,7 @@ export const projects = [
   {
     id: 'production-portal',
     featured: true,
+    visual: { icon: 'layoutDashboard', label: 'Operations Portal', accent: 'blue' },
     title: 'Production Management Portal',
     context: 'Internal web portal for a garment manufacturing group',
     role: 'Solo Developer',
@@ -99,6 +128,7 @@ export const projects = [
   },
   {
     id: 'bom-compare',
+    visual: { icon: 'gitCompare', label: 'Revision Diff', accent: 'violet' },
     title: 'BOM Compare App',
     context: 'Bill of Materials revision comparison tool',
     role: 'Solo Developer',
@@ -121,6 +151,7 @@ export const projects = [
   },
   {
     id: 'rpa-automation',
+    visual: { icon: 'bot', label: 'Workflow Bot', accent: 'slate' },
     title: 'RPA Workflow Automation',
     context: 'Robotic process automation for repetitive back-office tasks',
     role: 'Automation Developer',

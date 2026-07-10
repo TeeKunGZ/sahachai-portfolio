@@ -39,9 +39,15 @@ watch(
         </h1>
         <p class="mt-3 text-xl font-semibold text-accent-700 dark:text-accent-600">{{ profile.title }}</p>
         <p class="mt-4 leading-relaxed text-slate-600 dark:text-slate-400">{{ profile.tagline }}</p>
-        <p class="mt-3 text-sm font-medium text-slate-500 dark:text-slate-500">
-          Oracle ERP modernization / PL/SQL performance / automation for manufacturing operations
-        </p>
+        <div class="mt-5 flex flex-wrap justify-center gap-2 md:justify-start">
+          <span
+            v-for="item in profile.oracleProof"
+            :key="item"
+            class="inline-flex items-center rounded-md border border-accent-100 bg-white/80 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-accent-800 shadow-sm backdrop-blur dark:border-accent-900/60 dark:bg-slate-900/80 dark:text-accent-100"
+          >
+            {{ item }}
+          </span>
+        </div>
 
         <div class="mt-8 flex flex-wrap items-center justify-center gap-3 md:justify-start">
           <a

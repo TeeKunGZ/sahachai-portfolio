@@ -98,6 +98,286 @@
   position: relative;
 }
 
+.project-visual {
+  --visual-rgb: 14, 116, 144;
+  position: relative;
+  min-height: 6.75rem;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(var(--visual-rgb), 0.16);
+  background:
+    radial-gradient(circle at 18% 20%, rgba(var(--visual-rgb), 0.18), transparent 30%),
+    linear-gradient(135deg, rgba(var(--visual-rgb), 0.10), rgba(248, 250, 252, 0.92));
+  padding: 1rem;
+}
+
+.project-visual[data-accent='emerald'] {
+  --visual-rgb: 5, 150, 105;
+}
+
+.project-visual[data-accent='indigo'] {
+  --visual-rgb: 79, 70, 229;
+}
+
+.project-visual[data-accent='amber'] {
+  --visual-rgb: 217, 119, 6;
+}
+
+.project-visual[data-accent='blue'] {
+  --visual-rgb: 37, 99, 235;
+}
+
+.project-visual[data-accent='violet'] {
+  --visual-rgb: 124, 58, 237;
+}
+
+.project-visual[data-accent='slate'] {
+  --visual-rgb: 71, 85, 105;
+}
+
+.dark .project-visual {
+  background:
+    radial-gradient(circle at 18% 20%, rgba(var(--visual-rgb), 0.24), transparent 34%),
+    linear-gradient(135deg, rgba(var(--visual-rgb), 0.18), rgba(15, 23, 42, 0.94));
+}
+
+.project-visual-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.42;
+  background-image:
+    linear-gradient(to right, rgba(var(--visual-rgb), 0.18) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(var(--visual-rgb), 0.16) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(90deg, #000, transparent 82%);
+}
+
+.project-visual-pulse {
+  position: absolute;
+  left: -30%;
+  top: 50%;
+  height: 2px;
+  width: 48%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, transparent, rgba(var(--visual-rgb), 0.82), transparent);
+  box-shadow: 0 0 18px rgba(var(--visual-rgb), 0.38);
+  animation: project-visual-scan 4.5s ease-in-out infinite;
+}
+
+.project-visual-icon {
+  display: flex;
+  height: 4rem;
+  width: 4rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  border: 1px solid rgba(var(--visual-rgb), 0.22);
+  background: rgba(255, 255, 255, 0.72);
+  color: rgb(var(--visual-rgb));
+  box-shadow: 0 18px 35px rgba(var(--visual-rgb), 0.18);
+  backdrop-filter: blur(12px);
+}
+
+.dark .project-visual-icon {
+  background: rgba(15, 23, 42, 0.68);
+  color: rgb(207, 250, 254);
+}
+
+.project-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(135deg, rgba(14, 116, 144, 0.22), transparent 32%, transparent 68%, rgba(6, 182, 212, 0.16))
+      border-box;
+  mask:
+    linear-gradient(#000 0 0) padding-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.project-card-active {
+  transform: translateY(-4px);
+  box-shadow:
+    0 24px 60px rgba(15, 23, 42, 0.12),
+    0 0 0 1px rgba(14, 116, 144, 0.12);
+}
+
+.project-card-active::after {
+  opacity: 1;
+}
+
+.project-card-muted {
+  opacity: 0.82;
+  filter: saturate(0.92);
+}
+
+.project-card-muted:hover {
+  opacity: 1;
+  filter: none;
+}
+
+.portfolio-gallery {
+  --gallery-card-width: min(86vw, 42rem);
+  padding-inline: max(1.5rem, calc((100% - var(--gallery-card-width)) / 2));
+  scroll-padding-inline: max(1.5rem, calc((100% - var(--gallery-card-width)) / 2));
+  scrollbar-width: none;
+  mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+  cursor: grab;
+}
+
+.gallery-progress {
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.18);
+}
+
+.gallery-progress-fill {
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 0 12px rgba(14, 116, 144, 0.28),
+    0 0 24px rgba(6, 182, 212, 0.14);
+}
+
+.gallery-progress-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: rail-pulse 2.8s ease-in-out infinite;
+  transform: translateX(-100%);
+}
+
+.gallery-progress-node {
+  position: relative;
+  z-index: 1;
+  height: 0.35rem;
+  width: 0.35rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.22);
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.gallery-progress-node-active {
+  transform: scale(1.35);
+  background: rgb(207, 250, 254);
+  box-shadow:
+    0 0 0 1px rgba(14, 116, 144, 0.4),
+    0 0 12px rgba(6, 182, 212, 0.55);
+}
+
+@keyframes rail-pulse {
+  0%,
+  28% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  45%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes project-visual-scan {
+  0%,
+  25% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  45%,
+  72% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(310%);
+    opacity: 0;
+  }
+}
+
+.portfolio-gallery::-webkit-scrollbar {
+  display: none;
+}
+
+.portfolio-gallery.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+
+.portfolio-gallery.is-dragging .project-card {
+  pointer-events: none;
+}
+
+.gallery-paddle {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  display: none;
+  height: 3rem;
+  width: 3rem;
+  transform: translateY(-50%);
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  background: rgba(255, 255, 255, 0.88);
+  color: rgb(51, 65, 85);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14);
+  backdrop-filter: blur(14px);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.gallery-paddle:hover {
+  transform: translateY(-50%) scale(1.06);
+  border-color: rgba(14, 116, 144, 0.45);
+  color: rgb(14, 116, 144);
+  box-shadow: 0 22px 55px rgba(14, 116, 144, 0.18);
+}
+
+.gallery-paddle-left {
+  left: -0.75rem;
+}
+
+.gallery-paddle-right {
+  right: -0.75rem;
+}
+
+.dark .gallery-paddle {
+  border-color: rgba(51, 65, 85, 0.95);
+  background: rgba(15, 23, 42, 0.86);
+  color: rgb(203, 213, 225);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.34);
+}
+
+.dark .gallery-paddle:hover {
+  border-color: rgba(14, 116, 144, 0.7);
+  color: rgb(207, 250, 254);
+}
+
+@media (min-width: 768px) {
+  .gallery-paddle {
+    display: inline-flex;
+  }
+}
+
 /* v-reveal scroll animation (added by src/directives/reveal.js) */
 .reveal {
   opacity: 0;
@@ -194,6 +474,18 @@
   .profile-orbit::before,
   .profile-orbit::after,
   .profile-core {
+    animation: none;
+  }
+
+  .project-card-active {
+    transform: none;
+  }
+
+  .gallery-progress-fill::after {
+    animation: none;
+  }
+
+  .project-visual-pulse {
     animation: none;
   }
 

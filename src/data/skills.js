@@ -6,12 +6,15 @@ export const skillGroups = [
     title: 'Oracle Ecosystem',
     subtitle: 'Core Expertise',
     icon: 'database',
+    summary:
+      'Primary focus: building, tuning, and supporting Oracle ERP workflows used in daily manufacturing operations.',
     skills: [
       'Oracle Forms 6i / 2000',
       'Oracle Reports 6i / 2000',
       'Advanced PL/SQL (Packages, Procedures, Triggers, Functions)',
       'SQL Tuning & Query Optimization',
       'Data Migration & ETL',
+      'ERP Support, UAT & Release Stabilization',
     ],
   },
   {

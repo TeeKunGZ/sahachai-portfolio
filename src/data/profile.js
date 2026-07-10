@@ -10,9 +10,9 @@ const techCount = new Set(projects.flatMap((p) => p.tech)).size
 export const profile = {
   name: 'Sahachai Siribanjerdsak',
   initials: 'SS',
-  title: 'Oracle / PL/SQL Technical Lead',
+  title: 'Oracle ERP & PL/SQL Technical Lead',
   tagline:
-    'I modernize Oracle-based ERP workflows with PL/SQL, Forms, automation, and practical web tools that reduce manual work for business teams.',
+    'I modernize Oracle ERP workflows with PL/SQL, Forms, Reports, SQL tuning, and automation that keeps manufacturing operations moving.',
   location: 'Bangkok, Thailand',
   email: 'sahachaiza@gmail.com',
   linkedin: 'https://www.linkedin.com/in/sahachai-siri',
@@ -26,6 +26,13 @@ export const profile = {
     { value: 6, suffix: '+', label: 'Years of Experience' },
     { value: techCount, suffix: '+', label: 'Technologies & Tools' },
     { value: projects.length, suffix: '', label: 'Featured Projects' },
+  ],
+  oracleProof: [
+    'Oracle Forms',
+    'Oracle Reports',
+    'PL/SQL Packages',
+    'SQL Tuning',
+    'ERP Workflow Automation',
   ],
   strengths: [
     {

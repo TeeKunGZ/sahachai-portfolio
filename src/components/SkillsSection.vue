@@ -16,15 +16,23 @@ const icons = {
       <div v-reveal>
         <SectionHeading eyebrow="Skills" title="Technical Proficiency" />
       </div>
-      <div class="grid gap-6 md:grid-cols-3">
+      <div class="grid gap-6 md:grid-cols-2">
         <div
           v-for="(group, i) in skillGroups"
           :key="group.id"
           v-reveal="{ delay: i * 120 }"
-          class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent-100 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-accent-900"
+          class="rounded-xl border bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 dark:bg-slate-900"
+          :class="
+            group.id === 'oracle'
+              ? 'md:col-span-2 border-accent-200 shadow-[0_18px_45px_rgba(14,116,144,0.10)] hover:border-accent-300 dark:border-accent-900/70 dark:shadow-[0_18px_45px_rgba(0,0,0,0.24)] dark:hover:border-accent-700'
+              : 'border-slate-200 hover:border-accent-100 hover:shadow-md dark:border-slate-800 dark:hover:border-accent-900'
+          "
         >
           <div class="flex items-center gap-3">
-            <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-50 text-accent-700 dark:bg-accent-900/40 dark:text-accent-100">
+            <span
+              class="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-50 text-accent-700 dark:bg-accent-900/40 dark:text-accent-100"
+              :class="{ 'h-12 w-12': group.id === 'oracle' }"
+            >
               <component :is="icons[group.icon]" class="h-5 w-5" />
             </span>
             <div>
@@ -32,7 +40,13 @@ const icons = {
               <p class="text-xs font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">{{ group.subtitle }}</p>
             </div>
           </div>
-          <ul class="mt-5 space-y-2.5">
+          <p
+            v-if="group.summary"
+            class="mt-5 max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+          >
+            {{ group.summary }}
+          </p>
+          <ul class="mt-5 grid gap-2.5" :class="group.id === 'oracle' ? 'sm:grid-cols-2 lg:grid-cols-3' : ''">
             <li v-for="skill in group.skills" :key="skill" class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
               <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-600" />
               {{ skill }}
