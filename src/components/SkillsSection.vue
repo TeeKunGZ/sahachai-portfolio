@@ -1,5 +1,5 @@
 <script setup>
-import { Database, Code2, ClipboardList } from 'lucide-vue-next'
+import { Database, Code2, ClipboardList, UsersRound } from 'lucide-vue-next'
 import SectionHeading from './SectionHeading.vue'
 import { skillGroups } from '../data/skills.js'
 
@@ -7,6 +7,7 @@ const icons = {
   database: Database,
   code: Code2,
   clipboard: ClipboardList,
+  users: UsersRound,
 }
 </script>
 
@@ -16,16 +17,16 @@ const icons = {
       <div v-reveal>
         <SectionHeading eyebrow="Skills" title="Technical Proficiency" />
       </div>
-      <div class="grid gap-6 md:grid-cols-2">
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <div
           v-for="(group, i) in skillGroups"
           :key="group.id"
           v-reveal="{ delay: i * 120 }"
-          class="rounded-xl border bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 dark:bg-slate-900"
+          class="group relative overflow-hidden rounded-xl border bg-white p-6 shadow-sm transition-all duration-150 ease-out hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(14,116,144,0.12)] dark:bg-slate-900 dark:hover:shadow-[0_18px_45px_rgba(6,182,212,0.10)]"
           :class="
             group.id === 'oracle'
-              ? 'md:col-span-2 border-accent-200 shadow-[0_18px_45px_rgba(14,116,144,0.10)] hover:border-accent-300 dark:border-accent-900/70 dark:shadow-[0_18px_45px_rgba(0,0,0,0.24)] dark:hover:border-accent-700'
-              : 'border-slate-200 hover:border-accent-100 hover:shadow-md dark:border-slate-800 dark:hover:border-accent-900'
+              ? 'md:col-span-2 lg:col-span-3 border-accent-200 shadow-[0_18px_45px_rgba(14,116,144,0.10)] hover:border-accent-300 dark:border-accent-900/70 dark:shadow-[0_18px_45px_rgba(0,0,0,0.24)] dark:hover:border-accent-700'
+              : 'border-slate-200 hover:border-accent-100 dark:border-slate-800 dark:hover:border-accent-900'
           "
         >
           <div class="flex items-center gap-3">
@@ -42,11 +43,11 @@ const icons = {
           </div>
           <p
             v-if="group.summary"
-            class="mt-5 max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+            class="mt-5 text-sm leading-relaxed text-slate-600 dark:text-slate-400"
           >
             {{ group.summary }}
           </p>
-          <ul class="mt-5 grid gap-2.5" :class="group.id === 'oracle' ? 'sm:grid-cols-2 lg:grid-cols-3' : ''">
+          <ul class="mt-5 grid gap-2.5" :class="group.id === 'oracle' ? 'sm:grid-cols-2' : ''">
             <li v-for="skill in group.skills" :key="skill" class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
               <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-600" />
               {{ skill }}

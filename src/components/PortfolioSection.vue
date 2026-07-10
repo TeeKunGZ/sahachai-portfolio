@@ -18,7 +18,6 @@ import {
   LayoutDashboard,
 } from 'lucide-vue-next'
 import SectionHeading from './SectionHeading.vue'
-import RepoStats from './RepoStats.vue'
 import { projects } from '../data/projects.js'
 
 const ALL_FILTER = 'All'
@@ -437,8 +436,6 @@ const PREVIEW_COUNT = 2
             </span>
           </div>
 
-          <RepoStats v-if="project.repo" :repo="project.repo" />
-
           <dl class="mt-4 space-y-3 text-sm leading-relaxed">
             <div>
               <dt class="font-semibold text-slate-900 dark:text-white">Problem</dt>
@@ -521,7 +518,7 @@ const PREVIEW_COUNT = 2
       </div>
 
       <p class="mt-8 text-sm text-slate-400 dark:text-slate-500">
-        Case studies are described at a level that respects employer confidentiality — no internal data or live company systems are shown.
+        Case studies are described at a level that respects employer confidentiality; no internal data or live company systems are shown.
       </p>
     </div>
   </section>

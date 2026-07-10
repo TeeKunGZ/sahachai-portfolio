@@ -1,4 +1,4 @@
-// v-reveal — fades and slides an element in the first time it scrolls into view.
+// v-reveal fades and slides an element in the first time it scrolls into view.
 // Usage: v-reveal or v-reveal="{ delay: 150 }" (delay in ms, for staggering cards).
 // Skipped entirely when the user prefers reduced motion.
 export const reveal = {
@@ -9,10 +9,20 @@ export const reveal = {
     const delay = binding.value?.delay
     if (delay) el.style.transitionDelay = `${delay}ms`
 
+    const showElement = () => {
+      el.classList.add('reveal-visible')
+      if (delay) {
+        clearTimeout(el._revealDelayReset)
+        el._revealDelayReset = setTimeout(() => {
+          el.style.transitionDelay = ''
+        }, delay + 800)
+      }
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.classList.add('reveal-visible')
+          showElement()
           observer.disconnect()
           clearTimeout(el._revealFailsafe)
         }
@@ -27,12 +37,13 @@ export const reveal = {
     el._revealFailsafe = setTimeout(() => {
       const rect = el.getBoundingClientRect()
       if (rect.top < window.innerHeight && rect.bottom > 0) {
-        el.classList.add('reveal-visible')
+        showElement()
       }
     }, 3000)
   },
   unmounted(el) {
     el._revealObserver?.disconnect()
     clearTimeout(el._revealFailsafe)
+    clearTimeout(el._revealDelayReset)
   },
 }
