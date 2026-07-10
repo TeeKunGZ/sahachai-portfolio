@@ -3,6 +3,10 @@
 // they are available only inside the downloadable PDF resume.
 import { projects } from './projects.js'
 
+// Unique technologies across all featured projects — drives the hero stat
+// so it stays in sync as projects are added or edited.
+const techCount = new Set(projects.flatMap((p) => p.tech)).size
+
 export const profile = {
   name: 'Sahachai Siribanjerdsak',
   initials: 'SS',
@@ -20,7 +24,7 @@ export const profile = {
   // Case Studies count is derived from projects.js so it never drifts out of sync.
   stats: [
     { value: 6, suffix: '+', label: 'Years of Experience' },
-    { value: 3, suffix: '', label: 'Professional Roles' },
+    { value: techCount, suffix: '+', label: 'Technologies & Tools' },
     { value: projects.length, suffix: '', label: 'Featured Projects' },
   ],
   summary:
