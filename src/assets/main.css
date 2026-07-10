@@ -5,6 +5,9 @@
 @layer base {
   body {
     @apply bg-white font-sans text-slate-700 antialiased dark:bg-slate-950 dark:text-slate-300;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
   }
 }
 
@@ -74,14 +77,26 @@
 .profile-orbit::after {
   content: '';
   position: absolute;
-  inset: -18px;
+  inset: calc(var(--orbit-inner-offset) * -1);
   border: 1px solid rgba(21, 94, 117, 0.22);
   border-radius: 9999px;
   animation: orbit-spin 16s linear infinite;
 }
 
+.profile-orbit {
+  --profile-radius: 6.5rem;
+  --orbit-inner-offset: 18px;
+  --orbit-outer-offset: 34px;
+  --orbit-inner-radius: calc(var(--profile-radius) + var(--orbit-inner-offset));
+  --orbit-outer-radius: calc(var(--profile-radius) + var(--orbit-outer-offset));
+  --orbit-dot-a-duration: 14s;
+  --orbit-dot-b-duration: 20s;
+  --orbit-dot-a-delay: 0s;
+  --orbit-dot-b-delay: -6s;
+}
+
 .profile-orbit::after {
-  inset: -34px;
+  inset: calc(var(--orbit-outer-offset) * -1);
   border-style: dashed;
   border-color: rgba(14, 116, 144, 0.18);
   animation-duration: 24s;
@@ -109,12 +124,34 @@
     0 0 18px rgba(6, 182, 212, 0.58);
 }
 
+.orbit-dot::after {
+  content: '';
+  position: absolute;
+  inset: -0.28rem;
+  border-radius: inherit;
+  background: rgba(6, 182, 212, 0.18);
+  opacity: 0;
+  transform: scale(0.55);
+}
+
 .orbit-dot-a {
-  animation: orbit-dot-a 12s linear infinite;
+  animation:
+    orbit-dot-a var(--orbit-dot-a-duration) linear infinite var(--orbit-dot-a-delay),
+    orbit-dot-glow var(--orbit-dot-a-duration) ease-in-out infinite var(--orbit-dot-a-delay);
+}
+
+.orbit-dot-a::after {
+  animation: orbit-dot-flare var(--orbit-dot-a-duration) ease-in-out infinite var(--orbit-dot-a-delay);
 }
 
 .orbit-dot-b {
-  animation: orbit-dot-b 17s linear infinite;
+  animation:
+    orbit-dot-b var(--orbit-dot-b-duration) linear infinite var(--orbit-dot-b-delay),
+    orbit-dot-glow var(--orbit-dot-b-duration) ease-in-out infinite reverse var(--orbit-dot-b-delay);
+}
+
+.orbit-dot-b::after {
+  animation: orbit-dot-flare var(--orbit-dot-b-duration) ease-in-out infinite reverse var(--orbit-dot-b-delay);
 }
 
 .orbit-label {
@@ -127,9 +164,10 @@
   background: rgba(255, 255, 255, 0.84);
   padding: 0.3rem 0.65rem;
   color: rgb(var(--orbit-rgb));
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 800;
   letter-spacing: 0.08em;
+  white-space: nowrap;
   text-transform: uppercase;
   box-shadow:
     0 12px 30px rgba(15, 23, 42, 0.10),
@@ -174,7 +212,7 @@
 }
 
 .orbit-label-bottom {
-  bottom: -3.3rem;
+  bottom: -3.65rem;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -246,7 +284,7 @@
 .project-visual-pulse {
   position: absolute;
   left: -30%;
-  top: 50%;
+  top: 60%;
   height: 2px;
   width: 48%;
   border-radius: 9999px;
@@ -312,6 +350,31 @@
 .project-card-muted:hover {
   opacity: 1;
   filter: none;
+}
+
+.experience-dot-current::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(14, 116, 144, 0.42);
+  pointer-events: none;
+  animation: current-role-pulse 2.8s ease-out infinite;
+}
+
+@keyframes current-role-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.62);
+    opacity: 0.72;
+  }
+  72%,
+  100% {
+    transform: translate(-50%, -50%) scale(1.45);
+    opacity: 0;
+  }
 }
 
 .portfolio-gallery {
@@ -549,19 +612,50 @@
 
 @keyframes orbit-dot-a {
   from {
-    transform: rotate(0deg) translateX(8.85rem) rotate(0deg);
+    transform: rotate(0deg) translateX(var(--orbit-inner-radius)) rotate(0deg);
   }
   to {
-    transform: rotate(360deg) translateX(8.85rem) rotate(-360deg);
+    transform: rotate(360deg) translateX(var(--orbit-inner-radius)) rotate(-360deg);
   }
 }
 
 @keyframes orbit-dot-b {
   from {
-    transform: rotate(220deg) translateX(10.1rem) rotate(-220deg);
+    transform: rotate(180deg) translateX(var(--orbit-outer-radius)) rotate(-180deg);
   }
   to {
-    transform: rotate(-140deg) translateX(10.1rem) rotate(140deg);
+    transform: rotate(-180deg) translateX(var(--orbit-outer-radius)) rotate(180deg);
+  }
+}
+
+@keyframes orbit-dot-glow {
+  0%,
+  44%,
+  56%,
+  100% {
+    box-shadow:
+      0 0 0 4px rgba(6, 182, 212, 0.12),
+      0 0 18px rgba(6, 182, 212, 0.58);
+  }
+  50% {
+    box-shadow:
+      0 0 0 7px rgba(6, 182, 212, 0.16),
+      0 0 24px rgba(6, 182, 212, 0.78),
+      0 0 42px rgba(14, 116, 144, 0.24);
+  }
+}
+
+@keyframes orbit-dot-flare {
+  0%,
+  43%,
+  57%,
+  100% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.65);
   }
 }
 
@@ -580,6 +674,7 @@
   .scan-line,
   .led-trace,
   .orbit-dot,
+  .orbit-dot::after,
   .profile-orbit::before,
   .profile-orbit::after,
   .profile-core {
@@ -588,6 +683,11 @@
 
   .project-card-active {
     transform: none;
+  }
+
+  .experience-dot-current::after {
+    animation: none;
+    opacity: 0;
   }
 
   .gallery-progress-fill::after {
@@ -606,6 +706,10 @@
 }
 
 @media (min-width: 768px) {
+  .profile-orbit {
+    --profile-radius: 8rem;
+  }
+
   .orbit-label {
     display: block;
   }

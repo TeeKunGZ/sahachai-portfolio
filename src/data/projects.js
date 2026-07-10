@@ -6,6 +6,31 @@
 //   impact    - business/user value; keep qualitative unless verified metrics exist
 export const projects = [
   {
+    id: 'cv-portfolio',
+    featured: true,
+    visual: { icon: 'layoutDashboard', label: 'CV Portfolio', accent: 'violet' },
+    title: 'Interactive CV Portfolio',
+    context: 'Personal portfolio for Oracle ERP, PL/SQL, and automation work',
+    role: 'Solo Developer',
+    duration: '2026',
+    problem:
+      'A static resume could not clearly show the range of Oracle ERP modernization, automation, and web development work behind the listed experience.',
+    solution:
+      'Built a responsive portfolio that turns career history, case studies, GitHub activity, and recruiter contact flows into a polished web experience.',
+    highlights: [
+      'Designed a Vue 3 and Tailwind CSS single-page portfolio with responsive sections for profile, skills, work experience, and selected case studies.',
+      'Added interactive portfolio filtering, drag-friendly project navigation, progress nodes, and featured project badges for faster scanning.',
+      'Integrated GitHub repository signals and a command palette so recruiters can jump directly to the strongest proof points.',
+      'Refined professional UI details including current-role animation, dark mode support, motion preferences, and no-selection read-only presentation.',
+    ],
+    impact:
+      'Presents the resume as a working product while demonstrating frontend polish, automation mindset, and practical portfolio engineering.',
+    tech: ['Vue 3', 'Tailwind CSS', 'Vite', 'JavaScript', 'GitHub API'],
+    demoUrl: null,
+    sourceUrl: 'https://github.com/TeeKunGZ/sahachai-portfolio',
+    repo: 'TeeKunGZ/sahachai-portfolio',
+  },
+  {
     id: 'artportal',
     featured: true,
     visual: { icon: 'image', label: 'OCR Pipeline', accent: 'cyan' },
@@ -34,25 +59,25 @@ export const projects = [
   {
     id: 'auto-bom',
     featured: true,
-    visual: { icon: 'fileSpreadsheet', label: 'PDF to BOM', accent: 'emerald' },
+    visual: { icon: 'fileSpreadsheet', label: 'AI to BOM', accent: 'emerald' },
     metric: { from: '1 hr', to: '15 min', label: '~75% faster' },
-    title: 'Auto BOM - Automated BOM Data Extraction from PDF into Oracle ERP',
-    context: 'Automated BOM data extraction from Customers tech pack PDFs into Oracle ERP',
+    title: 'Auto BOM - AI-Powered Tech Pack Extraction',
+    context: 'Automated BOM extraction from PDF to Oracle ERP using Gemini Vision',
     role: 'Solo Developer',
     duration: '2025',
     problem:
-      'BOM details from customer tech pack PDF files had to be collected manually before they could be prepared for import into Oracle ERP, making each style slow to set up.',
+      'BOM details from customer tech pack PDFs required tedious manual transcription and formatting before they could be entered into Oracle ERP.',
     solution:
-      'Built an automated extraction workflow that reads Fanatics tech pack PDFs and outputs structured Excel data for quick Soft Square import.',
+      'Built an AI-driven web application that extracts PDF data, sanitizes it via rule-based logic, and stages it for a streamlined review-and-approve import into Oracle ERP.',
     highlights: [
-      'Analyzed Fanatics tech pack PDF layouts to identify the most reliable extraction path for BOM-related data fields.',
-      'Converted semi-structured PDF content into an Excel format prepared for downstream Soft Square import.',
-      'Reduced repeated manual data entry by turning tech pack review into a guided export workflow.',
-      'Helped automatically generate BOM database input so production teams can create material details faster and with fewer copy/paste steps.',
+      'Integrated Gemini Vision AI to perform highly accurate OCR extraction on uploaded unstructured Tech Pack PDFs.',
+      'Developed rule-based data cleansing logic to format AI outputs into structured Excel files for an initial layer of user verification.',
+      'Engineered an import pipeline that ingests approved Excel data directly into Oracle Database temporary tables via the web application.',
+      'Automated the final BOM generation within Oracle ERP, allowing users to simply map Style, Colorway, and Item Names, completely eliminating manual line-by-line entry.',
     ],
     impact:
-      'Reduced BOM data preparation time from about 1 hour to roughly 15 minutes per tech pack, cutting manual collection time by around 75%.',
-    tech: ['Python', 'PDF Extraction', 'Excel Automation', 'BOM', 'Soft Square'],
+      'Transformed a heavy manual data entry process into a modern "review-and-approve" workflow, reducing BOM preparation time by approximately 75%.',
+    tech: ['Gemini Vision AI', 'Web Application', 'Oracle Database', 'Rule-Based Logic', 'OCR'],
     demoUrl: null,
     sourceUrl: null,
   },
@@ -67,16 +92,16 @@ export const projects = [
     problem:
       'Business teams needed reliable ERP screens and operational reports over large manufacturing transaction datasets.',
     solution:
-      'Developed and maintained the Oracle Forms, Reports, and PL/SQL layer of the ERP with a focus on reliability and performance.',
+      'Developed and maintained the Oracle Forms, Reports, and PL/SQL layer on Oracle 11g with a focus on reliability, performance, and accurate data mapping.',
     highlights: [
-      'Built and maintained Oracle Forms and Reports modules backed by PL/SQL packages, procedures, triggers, and functions.',
+      'Built and maintained Oracle Forms and Reports modules backed by PL/SQL packages, procedures, triggers, and functions on an Oracle 11g database.',
+      'Improved logging accuracy by modifying database triggers to capture detailed operational statuses (e.g., isolating error_msg tracking).',
+      'Resolved complex data mapping requirements for production lifecycles (e.g., CUS_SEASON alignment).',
       'Ran SQL tuning and query optimization passes on high-volume tables to improve report and screen responsiveness.',
-      'Owned ETL and data migration logic for moving and transforming data across business environments.',
-      'Led root cause analysis for recurring database errors and performance bottlenecks to reduce repeated incidents.',
     ],
     impact:
       'Keeps core ERP workflows maintainable and performant across large transactional datasets and daily manufacturing operations.',
-    tech: ['Oracle Forms', 'Oracle Reports', 'PL/SQL', 'SQL Tuning'],
+    tech: ['Oracle Forms', 'Oracle Reports', 'PL/SQL', 'Oracle 11g', 'SQL Tuning'],
     demoUrl: null,
     sourceUrl: null,
   },
@@ -155,7 +180,7 @@ export const projects = [
     title: 'RPA Workflow Automation',
     context: 'Robotic process automation for repetitive back-office tasks',
     role: 'Automation Developer',
-    duration: '2020 - Present',
+    duration: '2025-2026',
     problem:
       'Recurring manual tasks such as data entry, file handling, and report distribution consumed staff time and introduced human error.',
     solution:
@@ -170,5 +195,28 @@ export const projects = [
     tech: ['UiPath', 'RPA', 'Python', 'Workflow Design'],
     demoUrl: null,
     sourceUrl: null,
+  },
+  {
+    id: 'hire-me-bot',
+    featured: true,
+    visual: { icon: 'bot', label: 'API Bot', accent: 'fuchsia' },
+    title: 'Recruitment Automation Bot',
+    context: 'Automated contact pipeline for GitHub portfolio',
+    role: 'Solo Developer',
+    duration: '2026',
+    problem:
+      'Wanted a standout, automated way for recruiters to reach out directly from my portfolio while keeping my personal inbox organized.',
+    solution:
+      'Designed a "Hire Me" API bot that captures recruiter inquiries and instantly routes them to a private Discord channel.',
+    highlights: [
+      'Built a lightweight API backend using Python and FastAPI to process incoming contact requests.',
+      'Integrated Discord Webhooks for real-time push notifications straight to mobile.',
+      'Implemented input validation to ensure clean data capture and prevent spam.',
+    ],
+    impact:
+      'Transforms a standard portfolio contact form into a real-time, automated recruitment notification system, showcasing practical API integration skills.',
+    tech: ['Python', 'FastAPI', 'Discord Webhooks', 'API Integration'],
+    demoUrl: null,
+    sourceUrl: null, 
   },
 ]

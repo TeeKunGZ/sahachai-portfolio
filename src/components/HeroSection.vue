@@ -5,6 +5,13 @@ import StatCounter from './StatCounter.vue'
 import { profile } from '../data/profile.js'
 
 const imageFailed = ref(false)
+const randomInRange = (min, max) => Math.random() * (max - min) + min
+const orbitMotion = {
+  '--orbit-dot-a-duration': `${randomInRange(11, 16).toFixed(2)}s`,
+  '--orbit-dot-b-duration': `${randomInRange(17, 24).toFixed(2)}s`,
+  '--orbit-dot-a-delay': `${randomInRange(-8, 0).toFixed(2)}s`,
+  '--orbit-dot-b-delay': `${randomInRange(-12, 0).toFixed(2)}s`,
+}
 
 watch(
   () => profile.photo,
@@ -82,12 +89,12 @@ watch(
       </div>
 
       <!-- Photo / initials placeholder -->
-      <div class="profile-orbit relative shrink-0">
+      <div class="profile-orbit relative shrink-0" :style="orbitMotion">
         <div class="orbit-dot orbit-dot-a" />
         <div class="orbit-dot orbit-dot-b" />
         <div class="orbit-label orbit-label-top" data-accent="indigo">PL/SQL</div>
-        <div class="orbit-label orbit-label-right" data-accent="cyan">Forms</div>
-        <div class="orbit-label orbit-label-bottom" data-accent="emerald">Reports</div>
+        <div class="orbit-label orbit-label-right" data-accent="cyan">Forms / Reports</div>
+        <div class="orbit-label orbit-label-bottom" data-accent="emerald">ERP Automation</div>
         <div class="orbit-label orbit-label-left" data-accent="amber">SQL Tuning</div>
         <img
           v-if="profile.photo && !imageFailed"

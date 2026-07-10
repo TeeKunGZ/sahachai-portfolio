@@ -17,9 +17,9 @@ export const profile = {
   email: 'sahachaiza@gmail.com',
   linkedin: 'https://www.linkedin.com/in/sahachai-siri',
   github: 'https://github.com/TeeKunGZ',
-  resumeFile: '/Sahachai-Siribanjerdsak-Resume.pdf',
-  // Place the profile image at public/profile.png.
-  photo: '/profile.png',
+  resumeFile:
+    'https://raw.githubusercontent.com/TeeKunGZ/sahachai-portfolio/main/public/Sahachai-Siribanjerdsak-Resume.pdf',
+  photo: 'https://raw.githubusercontent.com/TeeKunGZ/sahachai-portfolio/main/public/profile.png',
   // Quick stats shown under the hero tagline (animated count-up).
   // Case Studies count is derived from projects.js so it never drifts out of sync.
   stats: [

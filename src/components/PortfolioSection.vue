@@ -66,9 +66,12 @@ const dragStartScrollLeft = ref(0)
 const dragStartIndex = ref(0)
 const DRAG_SNAP_THRESHOLD = 10
 
-const progressWidth = computed(() =>
-  filteredProjects.value.length ? `${((activeIndex.value + 1) / filteredProjects.value.length) * 100}%` : '0%',
-)
+const progressWidth = computed(() => {
+  const total = filteredProjects.value.length
+  if (total <= 1) return total === 1 ? '100%' : '0%'
+
+  return `${(activeIndex.value / (total - 1)) * 100}%`
+})
 
 function updateActiveProject() {
   const gallery = galleryRef.value
@@ -216,7 +219,7 @@ const PREVIEW_COUNT = 2
             class="gallery-progress-fill h-full rounded-full bg-accent-700 transition-[width] duration-500 ease-out dark:bg-accent-500"
             :style="{ width: progressWidth }"
           />
-          <div class="absolute inset-0 flex items-center justify-between px-1">
+          <div class="absolute inset-0 flex items-center justify-between">
             <span
               v-for="(_, index) in filteredProjects"
               :key="index"
