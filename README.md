@@ -1,49 +1,51 @@
-# Sahachai Siribanjerdsak — CV & Portfolio
+# Sahachai Siribanjerdsak - CV & Portfolio
 
 Personal CV/portfolio site built with **Vue 3 + Vite + Tailwind CSS**, deployed on Vercel.
 
-> Oracle Development Supervisor with 6+ years of experience in Oracle application
-> development, PL/SQL programming, business analysis, and enterprise system support.
+> Oracle / PL/SQL technical lead with 6+ years of experience modernizing Oracle
+> ERP workflows, tuning enterprise systems, and delivering automation for
+> manufacturing operations.
 
 ## Features
 
-- **Single-page layout** with sticky navbar, smooth scrolling, and scroll-spy section highlighting
-- **Command palette** (`Ctrl+K`) — keyboard-first navigation and quick actions (download CV, email, LinkedIn, theme toggle)
-- **Dark / light mode** — persisted to `localStorage`, defaults to the OS color scheme, no flash on load
-- **Portfolio tech filter** — filter case studies by stack with animated `TransitionGroup` reflow
-- **Live GitHub stats** — cards linked to a public repo fetch language, stars, and last-push time from the GitHub API at runtime (session-cached, silent fallback when unavailable)
-- **Scroll-reveal animations** via a custom `v-reveal` directive (IntersectionObserver with an in-viewport failsafe), count-up stat counters, and a reading progress bar — all respecting `prefers-reduced-motion`
-- **SEO-ready** — Open Graph tags and JSON-LD (`schema.org/Person`) structured data
+- **Single-page CV layout** with sticky navbar, smooth scrolling, and section highlighting
+- **Command palette** (`Ctrl+K`) for keyboard-first navigation and quick actions
+- **Dark / light mode** persisted to `localStorage`, with no flash on load
+- **Portfolio tech filter** for case studies by stack
+- **Featured case studies** for Oracle ERP modernization, dashboards, automation, and workflow tools
+- **Live GitHub stats** for public repos, with session caching and silent fallback
+- **Scroll-reveal animations**, count-up stat counters, and a reading progress bar that respect `prefers-reduced-motion`
+- **SEO metadata and JSON-LD** structured data for a professional CV profile
 
 ## Architecture
 
-All content lives in plain data modules — updating the site never requires touching UI code:
+All content lives in plain data modules, so updating the CV does not require touching UI code:
 
-```
+```text
 src/
-├── data/            # content only: profile, skills, experience, projects, education
-├── components/      # one component per section + NavBar, CommandPalette, BackToTop
-├── composables/     # useTheme (dark mode), useCommandPalette (shared state)
-├── directives/      # v-reveal scroll animation
-└── assets/          # Tailwind entry point
+  data/            # profile, skills, experience, projects, education
+  components/      # section components + nav, palette, footer, utility UI
+  composables/     # theme, command palette, GitHub repo metadata
+  directives/      # v-reveal scroll animation
+  assets/          # Tailwind entry point
 ```
 
-Editing content = edit a file in `src/data/`, commit, push — Vercel redeploys automatically.
+Editing content = edit a file in `src/data/`, commit, push, and let Vercel redeploy.
 
 ## Development
 
 ```bash
 npm install
-npm run dev       # http://localhost:5173
-npm run build     # production build to dist/
-npm run preview   # preview the production build
+npm run dev
+npm run build
+npm run preview
 ```
 
 ## Privacy by design
 
-The public page intentionally exposes only email, LinkedIn, and city-level location.
+The public page intentionally exposes only email, LinkedIn, GitHub, and city-level location.
 Full contact details are available only inside the downloadable PDF resume.
 
 ## Stack
 
-Vue 3 (Composition API) · Vite · Tailwind CSS · lucide-vue-next · Vercel
+Vue 3 (Composition API) / Vite / Tailwind CSS / lucide-vue-next / Vercel

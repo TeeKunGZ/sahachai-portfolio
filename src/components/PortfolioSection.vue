@@ -1,19 +1,35 @@
 <script setup>
 import { ref, computed, reactive } from 'vue'
-import { ExternalLink, Github, TrendingUp, Briefcase, Calendar, ChevronDown } from 'lucide-vue-next'
+import { ExternalLink, Github, TrendingUp, Calendar, ChevronDown, Award } from 'lucide-vue-next'
 import SectionHeading from './SectionHeading.vue'
 import RepoStats from './RepoStats.vue'
 import { projects } from '../data/projects.js'
 
 const ALL_FILTER = 'All'
 const selectedTech = ref(ALL_FILTER)
+const CURRENT_YEAR = new Date().getFullYear()
 
 const techFilters = computed(() => [ALL_FILTER, ...new Set(projects.flatMap((p) => p.tech))])
 
+function latestYear(project) {
+  if (!project.duration) return 0
+  if (project.duration.includes('Present')) return CURRENT_YEAR
+
+  const years = project.duration.match(/\d{4}/g)?.map(Number) ?? []
+  return years.length ? Math.max(...years) : 0
+}
+
+const sortedProjects = computed(() =>
+  projects
+    .map((project, index) => ({ project, index }))
+    .sort((a, b) => latestYear(b.project) - latestYear(a.project) || a.index - b.index)
+    .map(({ project }) => project),
+)
+
 const filteredProjects = computed(() =>
   selectedTech.value === ALL_FILTER
-    ? projects
-    : projects.filter((p) => p.tech.includes(selectedTech.value)),
+    ? sortedProjects.value
+    : sortedProjects.value.filter((p) => p.tech.includes(selectedTech.value)),
 )
 
 // Highlights collapse to a short preview by default; expand per-card on demand.
@@ -30,6 +46,10 @@ const PREVIEW_COUNT = 2
       <div v-reveal>
         <SectionHeading eyebrow="Portfolio" title="Selected Case Studies" />
       </div>
+      <p v-reveal class="mb-6 max-w-3xl text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+        Confidentiality-safe examples of Oracle ERP modernization, automation, and manufacturing workflow tools.
+        Featured projects show the strongest match for Oracle / PL/SQL technical leadership roles.
+      </p>
 
       <!-- Tech filter chips -->
       <div v-reveal class="mb-8 flex flex-wrap gap-2">
@@ -52,22 +72,27 @@ const PREVIEW_COUNT = 2
         <article
           v-for="project in filteredProjects"
           :key="project.id"
-          class="flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent-100 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-accent-900"
+          class="project-card flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent-300 hover:shadow-[0_18px_45px_rgba(15,23,42,0.10)] dark:border-slate-800 dark:bg-slate-900 dark:hover:border-accent-800 dark:hover:shadow-[0_18px_45px_rgba(0,0,0,0.28)]"
         >
-          <h3 class="text-lg font-bold text-slate-900 dark:text-white">{{ project.title }}</h3>
+          <div class="flex items-start justify-between gap-3">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">{{ project.title }}</h3>
+            <span
+              v-if="project.featured"
+              class="inline-flex shrink-0 items-center gap-1 rounded-md border border-accent-100 bg-accent-50 px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-accent-800 dark:border-accent-900/60 dark:bg-accent-900/30 dark:text-accent-100"
+            >
+              <Award class="h-3 w-3" />
+              Featured
+            </span>
+          </div>
           <p class="mt-1 text-xs font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
             {{ project.context }}
           </p>
 
           <!-- Role / duration meta -->
           <div
-            v-if="project.role || project.duration"
+            v-if="project.duration"
             class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium text-slate-500 dark:text-slate-400"
           >
-            <span v-if="project.role" class="inline-flex items-center gap-1.5">
-              <Briefcase class="h-3.5 w-3.5" />
-              {{ project.role }}
-            </span>
             <span v-if="project.duration" class="inline-flex items-center gap-1.5">
               <Calendar class="h-3.5 w-3.5" />
               {{ project.duration }}

@@ -66,7 +66,7 @@ onBeforeUnmount(() => {
   >
     <nav class="section-shell flex h-16 items-center justify-between">
       <a href="#top" class="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
-        Sahachai<span class="text-accent-700 dark:text-accent-600">.</span>
+        Sahachai.S<span class="text-accent-700 dark:text-accent-600"></span>
       </a>
 
       <!-- Desktop links -->
