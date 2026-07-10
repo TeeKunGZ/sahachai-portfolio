@@ -1,6 +1,6 @@
 <script setup>
-import { ref, computed } from 'vue'
-import { ExternalLink, Github, TrendingUp } from 'lucide-vue-next'
+import { ref, computed, reactive } from 'vue'
+import { ExternalLink, Github, TrendingUp, Briefcase, Calendar, ChevronDown } from 'lucide-vue-next'
 import SectionHeading from './SectionHeading.vue'
 import RepoStats from './RepoStats.vue'
 import { projects } from '../data/projects.js'
@@ -15,6 +15,13 @@ const filteredProjects = computed(() =>
     ? projects
     : projects.filter((p) => p.tech.includes(selectedTech.value)),
 )
+
+// Highlights collapse to a short preview by default; expand per-card on demand.
+const expanded = reactive(new Set())
+function toggleExpanded(id) {
+  expanded.has(id) ? expanded.delete(id) : expanded.add(id)
+}
+const PREVIEW_COUNT = 2
 </script>
 
 <template>
@@ -52,6 +59,21 @@ const filteredProjects = computed(() =>
             {{ project.context }}
           </p>
 
+          <!-- Role / duration meta -->
+          <div
+            v-if="project.role || project.duration"
+            class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium text-slate-500 dark:text-slate-400"
+          >
+            <span v-if="project.role" class="inline-flex items-center gap-1.5">
+              <Briefcase class="h-3.5 w-3.5" />
+              {{ project.role }}
+            </span>
+            <span v-if="project.duration" class="inline-flex items-center gap-1.5">
+              <Calendar class="h-3.5 w-3.5" />
+              {{ project.duration }}
+            </span>
+          </div>
+
           <RepoStats v-if="project.repo" :repo="project.repo" />
 
           <dl class="mt-4 space-y-3 text-sm leading-relaxed">
@@ -68,6 +90,32 @@ const filteredProjects = computed(() =>
               <dd class="font-medium text-accent-900 dark:text-accent-100">{{ project.impact }}</dd>
             </div>
           </dl>
+
+          <!-- Key highlights -->
+          <div v-if="project.highlights?.length" class="mt-4">
+            <p class="text-sm font-semibold text-slate-900 dark:text-white">Key Highlights</p>
+            <ul class="mt-2 space-y-2">
+              <li
+                v-for="(item, i) in expanded.has(project.id) ? project.highlights : project.highlights.slice(0, PREVIEW_COUNT)"
+                :key="i"
+                class="flex items-start gap-2.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+              >
+                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-300 dark:bg-slate-700" />
+                {{ item }}
+              </li>
+            </ul>
+            <button
+              v-if="project.highlights.length > PREVIEW_COUNT"
+              class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-accent-700 hover:text-accent-900 dark:text-accent-600 dark:hover:text-accent-100"
+              @click="toggleExpanded(project.id)"
+            >
+              <ChevronDown
+                class="h-3.5 w-3.5 transition-transform"
+                :class="{ 'rotate-180': expanded.has(project.id) }"
+              />
+              {{ expanded.has(project.id) ? 'Show less' : `Show ${project.highlights.length - PREVIEW_COUNT} more` }}
+            </button>
+          </div>
 
           <div class="mt-4 flex flex-wrap gap-2">
             <button
